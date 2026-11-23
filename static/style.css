@@ -1,0 +1,422 @@
+/* =========================================================
+   AURA RECREATION - styles
+   1. Theme colors (one set per accessibility profile)
+   2. Base layout
+   3. Components (buttons, cards, toggle...)
+   4. Clarify Content mode
+   5. Enforcer simulation (frames + labels)
+   ========================================================= */
+
+/* ---------- 1. THEMES ----------
+   Each profile only changes these variables.
+   Everything else on the page reads from them.
+   The classes work on <body> (whole page) and on any single
+   element too (used by the Playground preview). */
+
+/* The Voyager (Color Blind): blue + orange is a color pair that
+   most color-blind people can tell apart. Links are underlined,
+   so meaning never depends on color alone. */
+.theme-voyager {
+  --bg: #050a1f;
+  --bg-glow: rgba(37, 99, 235, 0.35);
+  --surface: #0c1530;
+  --text: #f1f5ff;
+  --muted: #a3b0cf;
+  --accent: #3b82f6;
+  --accent-2: #8b9dff;
+  --accent-text: #ffffff;
+  --frame: #3b82f6;
+  --tag-bg: #ff9f1c;
+  --tag-text: #111111;
+  --base-size: 17px;
+}
+
+/* The Beacon (Low Vision): maximum contrast (yellow/white on black),
+   bigger text and thicker lines. */
+.theme-beacon {
+  --bg: #000000;
+  --bg-glow: rgba(255, 212, 0, 0.18);
+  --surface: #111111;
+  --text: #ffffff;
+  --muted: #f2f2f2;
+  --accent: #ffd400;
+  --accent-2: #ffd400;
+  --accent-text: #000000;
+  --frame: #ffd400;
+  --tag-bg: #ffd400;
+  --tag-text: #000000;
+  --base-size: 20px;
+}
+
+/* The Guardian (Eye Strain): warm, dim colors with less blue light
+   and softer contrast, easier for tired eyes. */
+.theme-guardian {
+  --bg: #1c1712;
+  --bg-glow: rgba(217, 140, 60, 0.18);
+  --surface: #2a221a;
+  --text: #ecdfc8;
+  --muted: #bfae92;
+  --accent: #d9944a;
+  --accent-2: #e8b77a;
+  --accent-text: #1c1712;
+  --frame: #d9944a;
+  --tag-bg: #d9944a;
+  --tag-text: #1c1712;
+  --base-size: 17px;
+}
+
+/* ---------- 2. BASE LAYOUT ---------- */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  /* System fonts only: no font is downloaded from the internet (privacy). */
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: var(--base-size);
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 70% 30%, var(--bg-glow), transparent 45%),
+    var(--bg);
+  background-attachment: fixed;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+.theme-voyager a:not(.btn),
+.theme-beacon a:not(.btn) { text-decoration: underline; }
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem 5%;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--accent-2);
+  padding: 0.2rem 0.5rem;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+main { padding: 0 5%; }
+
+section { padding: 3rem 0; }
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-2);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  line-height: 1.1;
+  margin: 0 0 1.5rem;
+  max-width: 14ch;
+}
+
+.accent { color: var(--accent-2); }
+
+.lead {
+  color: var(--muted);
+  max-width: 34rem;
+  margin: 0 0 2rem;
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+h2 { font-size: 1.8rem; margin: 0 0 0.3rem; }
+
+.sub { color: var(--muted); margin: 0 0 2rem; }
+
+/* ---------- 3. COMPONENTS ---------- */
+.frame { display: inline-block; }
+
+.btn {
+  display: inline-block;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1.4rem;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--bg-glow); }
+.btn:focus-visible, select:focus-visible, textarea:focus-visible, .toggle input:focus-visible + .slider {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+.btn-primary { background: var(--accent); color: var(--accent-text); }
+.btn-ghost { background: transparent; color: var(--text); border-color: transparent; }
+
+select {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+
+/* Toggle switch */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 0.6rem 1rem;
+  border: 2px solid var(--surface);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.slider {
+  width: 2.4rem; height: 1.3rem;
+  background: #555;
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.2s;
+}
+.slider::after {
+  content: "";
+  position: absolute;
+  top: 0.15rem; left: 0.15rem;
+  width: 1rem; height: 1rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+.toggle input:checked + .slider { background: #22c55e; }
+.toggle input:checked + .slider::after { transform: translateX(1.1rem); }
+
+/* Status card */
+.status-card {
+  background: var(--surface);
+  border: 1px solid var(--bg-glow);
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
+  font-family: Consolas, "Courier New", monospace;
+  box-shadow: 0 0 60px var(--bg-glow);
+  justify-self: center;
+}
+.status-card p { margin: 0.2rem 0; }
+.status-source { font-size: 0.7rem; color: var(--muted); margin-top: 0.8rem !important; }
+
+/* Feature cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+.card {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 1.5rem;
+}
+.card h3 { margin: 0 0 0.5rem; color: var(--accent-2); }
+.card p { margin: 0; color: var(--muted); }
+
+/* Playground: before / after comparison */
+.pg-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.pg-field { display: flex; flex-direction: column; gap: 0.6rem; }
+.pg-step { font-weight: 700; }
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem;
+  resize: vertical;
+}
+.pg-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.pg-tab {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--surface);
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+}
+.pg-tab.active { border-color: var(--accent); background: var(--accent); color: var(--accent-text); }
+.pg-field .toggle { align-self: flex-start; }
+
+.pg-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.pg-label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+.pg-panel { display: flex; flex-direction: column; }
+.pg-site { border-radius: 14px; padding: 1.5rem; flex: 1; }
+.pg-site h3 { margin: 0 0 0.6rem; }
+
+/* "Without Aura": a typical hard-to-read website on purpose
+   (light grey text on light background, tiny text and button) */
+.pg-bad { background: #f3f3f3; color: #a8a8a8; font-size: 13px; font-family: Georgia, serif; }
+.pg-bad h3 { color: #c2c2c2; font-weight: 400; }
+.pg-bad .pg-button {
+  font-size: 10px;
+  padding: 2px 6px;
+  color: #ffffff;
+  background: #b9d3f0;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* "With Aura": uses the chosen profile's colors */
+.pg-good { background: var(--bg); color: var(--text); font-size: var(--base-size); }
+.pg-good h3 { color: var(--accent-2); }
+.pg-good.easy-reading p { font-size: 1.2em; letter-spacing: 0.03em; word-spacing: 0.08em; line-height: 1.85; }
+.pg-good.easy-reading .pg-button { font-size: 1.1rem; padding: 1rem 1.8rem; }
+.pg-hint { color: var(--muted); font-size: 0.9rem; min-height: 1.5em; margin-top: 1rem; }
+
+/* Real mode */
+.pill {
+  font-size: 0.8rem;
+  vertical-align: middle;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border-radius: 999px;
+  padding: 0.15rem 0.7rem;
+}
+.steps li { margin-bottom: 1rem; }
+.steps .btn { margin-left: 0.5rem; cursor: grab; }
+kbd {
+  background: var(--surface);
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  padding: 0 0.4rem;
+  font-family: inherit;
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 2rem 5%;
+  border-top: 1px solid var(--surface);
+}
+
+/* ---------- 4. CLARIFY CONTENT ----------
+   Simpler sentences (swapped by script.js) + bigger,
+   more spaced-out text that is easier to read. */
+body.clarify { font-size: calc(var(--base-size) * 1.15); }
+body.clarify p,
+body.clarify li { letter-spacing: 0.03em; word-spacing: 0.08em; line-height: 1.85; }
+body.clarify .lead,
+body.clarify .card p { color: var(--text); }
+body.clarify .btn { font-size: 1.05rem; padding: 0.9rem 1.6rem; }
+
+/* ---------- 5. ENFORCER SIMULATION ----------
+   Every element with a data-aura attribute gets a frame,
+   a type label (top) and a result tag (bottom).
+
+   FIX for the original's "overlapping frames" bug:
+   - outline is used instead of border, so the layout never jumps
+   - extra space is added between framed elements while enforcing
+   - big containers (Structure) put their label on the right side,
+     small elements put theirs on the left, so nested labels
+     do not land on top of each other */
+[data-aura] { position: relative; }
+
+body.enforcing [data-aura] {
+  outline: 2px solid var(--frame);
+  outline-offset: 4px;
+  border-radius: 6px;
+  box-shadow: 0 0 18px var(--bg-glow);
+}
+
+body.enforcing [data-aura]::before,
+body.enforcing [data-aura]::after {
+  position: absolute;
+  z-index: 10;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+
+/* Type label, above the frame */
+body.enforcing [data-aura]::before {
+  content: attr(data-aura);
+  text-transform: uppercase;
+  top: -22px;
+  left: -4px;
+  background: var(--frame);
+  color: var(--accent-text);
+}
+
+/* Result tag, below the frame */
+body.enforcing [data-aura]::after {
+  content: attr(data-aura-tag);
+  bottom: -22px;
+  right: -4px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+}
+
+/* Big containers: label on the right, tag on the left */
+body.enforcing [data-aura="Structure"]::before { left: auto; right: -4px; }
+body.enforcing [data-aura="Structure"]::after  { right: auto; left: -4px; }
+
+/* Make room so frames and labels do not overlap */
+body.enforcing .nav-controls { gap: 1.6rem; }
+body.enforcing .nav { padding-top: 2.4rem; padding-bottom: 2.4rem; }
+body.enforcing .hero-actions { gap: 1.6rem; margin-top: 2.6rem; }
+body.enforcing h1 { margin-bottom: 2.6rem; }
+body.enforcing .cards { gap: 2.6rem; margin-top: 2.6rem; }
+body.enforcing section { padding: 4rem 0; }
+body.enforcing section[data-aura] { padding: 3rem 1.5rem; margin: 2rem 0 3.5rem; }
+
+/* ---------- RESPONSIVE (small screens / phones) ---------- */
+@media (max-width: 800px) {
+  .hero, .pg-controls, .pg-compare { grid-template-columns: 1fr; }
+  .status-card { justify-self: start; }
+}

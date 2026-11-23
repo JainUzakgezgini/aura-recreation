@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura | The Guardian of Accessibility</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-voyager">
+
+  <!-- ========== NAVIGATION BAR ========== -->
+  <header class="nav">
+    <div class="logo" data-aura="UI Element" data-aura-tag="Optimized">AURA</div>
+
+    <div class="nav-controls">
+      <span class="frame" data-aura="Interaction" data-aura-tag="Target Boosted">
+        <select id="profileSelect" aria-label="Choose an accessibility profile">
+          <option value="voyager">The Voyager (Color Blind)</option>
+          <option value="beacon">The Beacon (Low Vision)</option>
+          <option value="guardian">The Guardian (Eye Strain)</option>
+        </select>
+      </span>
+
+      <span class="frame" data-aura="Interaction" data-aura-tag="Target Boosted">
+        <button id="enforcerBtn" class="btn btn-primary">Simulate Aura Enforcer</button>
+      </span>
+
+      <span class="frame" data-aura="Interaction" data-aura-tag="Target Boosted">
+        <label class="toggle">
+          <input type="checkbox" id="clarifyToggle">
+          <span class="slider" aria-hidden="true"></span>
+          <span>Clarify Content</span>
+        </label>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="badge">Aura Enforcer | Alpha 0.1</p>
+
+        <h1 data-aura="Structure" data-aura-tag="Readable"
+            data-simple='The <span class="accent">Guardian</span> for everyone.'>
+          The Guardian of <span class="accent">Accessibility.</span>
+        </h1>
+
+        <p class="lead"
+           data-simple="Aura helps you use any app easily. It finds and fixes hard parts on your screen in real-time, keeping your data private.">
+          Intelligence that lives between your windows. Aura identifies, cleans, and fixes digital
+          barriers in real-time, bringing inclusive experiences to every application on your machine.
+        </p>
+
+        <div class="hero-actions">
+          <span class="frame" data-aura="Interaction" data-aura-tag="Target Boosted">
+            <a href="#real-mode" class="btn btn-primary">Download for Windows</a>
+          </span>
+          <span class="frame" data-aura="Interaction" data-aura-tag="Target Boosted">
+            <a href="#playground" class="btn btn-ghost">Watch the Vision</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- Status card: filled with live data from /api/status -->
+      <div class="status-card" data-aura="UI Element" data-aura-tag="Optimized" aria-live="polite">
+        <p>Scanning: <span id="statusApp">Notepad.exe</span></p>
+        <p>Fixes Applied: <span id="statusFixes">12</span></p>
+        <p>Mode: <span id="statusMode">STANDBY</span></p>
+        <p class="status-source" id="statusSource">Connecting to local engine...</p>
+      </div>
+    </section>
+
+    <!-- ========== FEATURES SECTION ========== -->
+    <section class="features" data-aura="Structure" data-aura-tag="Semantic">
+      <h2>Universal Empowerment</h2>
+      <p class="sub" data-simple="It works on websites and on older programs too.">
+        The web, legacy apps, and everything in between.
+      </p>
+
+      <div class="cards">
+        <article class="card" data-aura="Content Box" data-aura-tag="Readable">
+          <h3>Visual Enforcement</h3>
+          <p data-simple="Makes hard-to-see things easy to see. Makes small buttons bigger.">
+            Auto-corrects low contrast, identifies unlabelled icons, and enlarges tiny touch targets.
+          </p>
+        </article>
+        <article class="card" data-aura="Content Box" data-aura-tag="Readable">
+          <h3>Aura Narrative</h3>
+          <p data-simple="Reads the screen out loud for you, calmly and clearly.">
+            A smart, localized TTS engine that describes the screen as you move, without the noise
+            of traditional screen readers.
+          </p>
+        </article>
+        <article class="card" data-aura="Content Box" data-aura-tag="Readable">
+          <h3>Vision Core</h3>
+          <p data-simple="Everything stays on your computer. Nothing is sent anywhere.">
+            100% on-device AI. Your screen data never leaves your computer. Privacy is an
+            accessibility right.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== PLAYGROUND: before / after comparison ========== -->
+    <section class="playground" id="playground" data-aura="Structure" data-aura-tag="Semantic">
+      <h2>Aura Playground</h2>
+      <p class="sub" data-simple="Write your own text. See how it looks without Aura and with Aura.">
+        For website owners and designers: write your own text and compare how it looks
+        for a user without Aura and with each Aura profile.
+      </p>
+
+      <div class="pg-controls">
+        <label class="pg-field">
+          <span class="pg-step">1. Your text</span>
+          <textarea id="playgroundInput" rows="3">Welcome to our website! Click the button below to sign up for our newsletter.</textarea>
+        </label>
+
+        <div class="pg-field">
+          <span class="pg-step">2. Choose a profile to test</span>
+          <div class="pg-tabs" role="group" aria-label="Preview profile">
+            <button class="pg-tab" data-profile="voyager">Voyager (Color Blind)</button>
+            <button class="pg-tab" data-profile="beacon">Beacon (Low Vision)</button>
+            <button class="pg-tab" data-profile="guardian">Guardian (Eye Strain)</button>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="pgClarify">
+            <span class="slider" aria-hidden="true"></span>
+            <span>Easier reading</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="pg-compare">
+        <div class="pg-panel">
+          <span class="pg-label">Without Aura</span>
+          <div class="pg-site pg-bad">
+            <h3>My Website</h3>
+            <p class="pg-text"></p>
+            <button class="pg-button">Example button</button>
+          </div>
+        </div>
+
+        <div class="pg-panel">
+          <span class="pg-label">With Aura: <strong id="previewProfile">The Voyager (Color Blind)</strong></span>
+          <div class="pg-site pg-good theme-voyager" id="pgAfter"
+               data-aura="Content Box" data-aura-tag="Readable">
+            <h3>My Website</h3>
+            <p class="pg-text"></p>
+            <button class="btn btn-primary pg-button">Example button</button>
+          </div>
+        </div>
+      </div>
+      <p class="pg-hint" id="pgHint" aria-live="polite"></p>
+    </section>
+
+    <!-- ========== BONUS: REAL MODE (bookmarklet) ========== -->
+    <section class="real-mode" id="real-mode" data-aura="Structure" data-aura-tag="Semantic">
+      <h2>Real Mode <span class="pill">Bonus</span></h2>
+      <p class="sub" data-simple="Use Aura on real websites. It is free and private.">
+        Use Aura on any real website. Runs 100% in your own browser: no install, no data sent.
+      </p>
+
+      <ol class="steps">
+        <li>Show your bookmarks bar: press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> (Mac: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>).</li>
+        <li>Drag this button up to your bookmarks bar:
+          <a id="bookmarkletLink" class="btn btn-primary" href="#">Aura Real Mode</a>
+        </li>
+        <li>Open any website (for example Wikipedia) and click the bookmark. The Aura panel opens in the bottom-right corner.</li>
+        <li>In the panel: pick a <strong>Profile</strong>, turn on <strong>Enforcer</strong> to really scan the page and fix
+          low contrast text, tiny buttons and images without alt text, and turn on <strong>Clarify</strong> for easier reading.</li>
+        <li>Click the bookmark again (or &times;) to close Aura. The page goes back to normal.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Aura Systems. Part of the Tworam Ecosystem. Recreated for the APL project 2026.</p>
+  </footer>
+
+  <script src="bookmarklet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
