@@ -1,7 +1,7 @@
 /* =========================================================
    AURA REAL MODE - Chrome extension (background script)
    When the user clicks the Aura icon in the toolbar
-   (or presses Alt+Shift+A), we run the same auraRealMode()
+   (or presses Ctrl+Shift+Y), we run the same auraRealMode()
    function as the bookmarklet on the current page.
 
    Permissions are kept as small as possible:
