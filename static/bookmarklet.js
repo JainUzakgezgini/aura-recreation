@@ -11,12 +11,16 @@
                  - images without alt text     -> found + labelled
    3. Clarify  : easier reading (bigger text, more spacing,
                  no moving animations)
+   4. Narrative: reads the page (or the text you selected)
+                 out loud with your computer's own offline voices
 
    Everything runs inside your own browser. Nothing is saved
    or sent anywhere. Click the bookmark again to close Aura.
 
    The whole code must be inside this one function (no outside
    variables), because it runs inside other people's websites.
+   The same code is used by the Chrome extension
+   (extension/aura-real-mode.js is a copy of this file).
    ========================================================= */
 function auraRealMode() {
   var HOST_ID = "aura-rm-host";
@@ -24,7 +28,7 @@ function auraRealMode() {
   /* Clicking the bookmark again closes Aura and undoes everything */
   var existing = document.getElementById(HOST_ID);
   if (existing) {
-    existing.auraClose();
+    if (existing.auraClose) existing.auraClose(); else existing.remove();
     return;
   }
 
@@ -186,6 +190,10 @@ function auraRealMode() {
     ".status{font:12px/1.6 Consolas,monospace;background:#050a1f;border-radius:8px;padding:8px 10px;margin-top:10px;}" +
     ".legend{font-size:11px;color:#a3b0cf;margin-top:6px;}" +
     ".dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin:0 4px 0 8px;}" +
+    ".narrative{display:flex;gap:8px;margin-top:10px;}" +
+    ".narrative button{flex:1;padding:7px;font-weight:600;border:2px solid #3b82f6;}" +
+    "#read{background:#2563eb;color:#fff;}#stop{background:transparent;color:#f1f5ff;}" +
+    "#say{font-size:11px;color:#a3b0cf;min-height:1em;margin-top:4px;}" +
     "</style>" +
     "<div class='panel' role='dialog' aria-label='Aura Real Mode'>" +
     "  <div class='top'><span class='logo'>AURA</span><button class='close' aria-label='Close Aura'>&times;</button></div>" +
@@ -195,6 +203,8 @@ function auraRealMode() {
     "  </select></label>" +
     "  <label>Enforcer: scan &amp; fix <input type='checkbox' id='enforcer'></label>" +
     "  <label>Clarify: easier reading <input type='checkbox' id='clarify'></label>" +
+    "  <div class='narrative'><button id='read'>Read aloud</button><button id='stop'>Stop</button></div>" +
+    "  <div id='say' aria-live='polite'></div>" +
     "  <div class='status' aria-live='polite'>" +
     "    Scanning: <span id='site'></span><br>Fixes Applied: <span id='fixes'>0</span><br>Mode: <span id='mode'>STANDBY</span>" +
     "    <div id='details'></div>" +
@@ -230,7 +240,67 @@ function auraRealMode() {
     clarifyStyle.textContent = this.checked ? CLARIFY_CSS : "";
   });
 
+  /* ---------- Aura Narrative: read out loud ----------
+     Uses the browser's built-in speechSynthesis with OFFLINE voices
+     only (localService = true), so the text never leaves the computer. */
+  function pickVoice() {
+    var voices = speechSynthesis.getVoices().filter(function (v) { return v.localService; });
+    var lang = (document.documentElement.lang || navigator.language || "en").slice(0, 2).toLowerCase();
+    return voices.find(function (v) { return v.lang.toLowerCase().indexOf(lang) === 0; }) ||
+           voices.find(function (v) { return v.default; }) || voices[0] || null;
+  }
+
+  function textToRead() {
+    var selected = String(window.getSelection()).trim();
+    if (selected) return selected; // the user selected some text: read only that
+
+    var parts = [document.title];
+    var h1 = document.querySelector("h1");
+    if (h1 && h1.innerText.trim() !== document.title) parts.push(h1.innerText.trim());
+    var area = document.querySelector("main, article, [role=main]") || document.body;
+    var length = 0;
+    area.querySelectorAll("p").forEach(function (p) {
+      var text = p.innerText.trim();
+      if (length < 600 && text.length > 40 && isVisible(p)) {
+        parts.push(text);
+        length += text.length;
+      }
+    });
+    return parts
+      .filter(function (part) { return part; }) // skip empty parts (e.g. no page title)
+      .map(function (part) { return /[.!?:]$/.test(part) ? part : part + "."; })
+      .join(" ");
+  }
+
+  function speak() {
+    if (!window.speechSynthesis) { $("say").textContent = "This browser cannot read aloud."; return; }
+    if (!speechSynthesis.getVoices().length) {
+      $("say").textContent = "Loading voices...";
+      speechSynthesis.addEventListener("voiceschanged", speak, { once: true }); // voices load a bit later
+      return;
+    }
+    speechSynthesis.cancel();
+    var voice = pickVoice();
+    if (!voice) { $("say").textContent = "No offline voice found on this computer."; return; }
+    var speech = new SpeechSynthesisUtterance(textToRead());
+    speech.voice = voice;
+    speech.lang = voice.lang;
+    speech.rate = 0.95;
+    speech.onend = function () { $("say").textContent = ""; };
+    $("say").textContent = "Reading with: " + voice.name;
+    speechSynthesis.speak(speech);
+  }
+
+  // preventDefault on mousedown keeps the user's text selection on the page
+  $("read").addEventListener("mousedown", function (e) { e.preventDefault(); });
+  $("read").addEventListener("click", speak);
+  $("stop").addEventListener("click", function () {
+    if (window.speechSynthesis) speechSynthesis.cancel();
+    $("say").textContent = "";
+  });
+
   host.auraClose = function () {
+    if (window.speechSynthesis) speechSynthesis.cancel();
     undoFixes();
     profileStyle.remove();
     clarifyStyle.remove();

@@ -322,6 +322,8 @@ textarea {
   padding: 0.15rem 0.7rem;
 }
 .steps li { margin-bottom: 1rem; }
+.real-mode .card .steps { padding-left: 1.2rem; margin: 1rem 0 0; color: var(--muted); }
+code { font-family: Consolas, "Courier New", monospace; background: var(--bg); padding: 0 0.3rem; border-radius: 4px; }
 .steps .btn { margin-left: 0.5rem; cursor: grab; }
 kbd {
   background: var(--surface);

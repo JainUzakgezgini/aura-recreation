@@ -155,23 +155,42 @@
       <p class="pg-hint" id="pgHint" aria-live="polite"></p>
     </section>
 
-    <!-- ========== BONUS: REAL MODE (bookmarklet) ========== -->
+    <!-- ========== BONUS: REAL MODE (bookmarklet + Chrome extension) ========== -->
     <section class="real-mode" id="real-mode" data-aura="Structure" data-aura-tag="Semantic">
       <h2>Real Mode <span class="pill">Bonus</span></h2>
       <p class="sub" data-simple="Use Aura on real websites. It is free and private.">
-        Use Aura on any real website. Runs 100% in your own browser: no install, no data sent.
+        Use Aura on any real website. Runs 100% in your own browser: nothing is sent anywhere.
       </p>
 
-      <ol class="steps">
-        <li>Show your bookmarks bar: press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> (Mac: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>).</li>
-        <li>Drag this button up to your bookmarks bar:
-          <a id="bookmarkletLink" class="btn btn-primary" href="#">Aura Real Mode</a>
-        </li>
-        <li>Open any website (for example Wikipedia) and click the bookmark. The Aura panel opens in the bottom-right corner.</li>
-        <li>In the panel: pick a <strong>Profile</strong>, turn on <strong>Enforcer</strong> to really scan the page and fix
-          low contrast text, tiny buttons and images without alt text, and turn on <strong>Clarify</strong> for easier reading.</li>
-        <li>Click the bookmark again (or &times;) to close Aura. The page goes back to normal.</li>
-      </ol>
+      <p>The Aura panel opens in the bottom-right corner of the page. In the panel you can:</p>
+      <ul class="steps">
+        <li><strong>Profile:</strong> change the colors (Voyager, Beacon or Guardian).</li>
+        <li><strong>Enforcer:</strong> really scan the page and fix low contrast text, tiny buttons and images without alt text.</li>
+        <li><strong>Clarify:</strong> easier reading with bigger text and more spacing.</li>
+        <li><strong>Narrative:</strong> read the page, or the text you selected, out loud with your computer's own offline voices.</li>
+      </ul>
+
+      <div class="cards">
+        <article class="card" data-aura="Content Box" data-aura-tag="Readable">
+          <h3>Option 1: Bookmarklet</h3>
+          <p>No installation, no permissions, works in Chrome, Edge and Firefox. Good for a shared computer.</p>
+          <ol class="steps">
+            <li>Show the bookmarks bar: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> (Mac: <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd>).</li>
+            <li>Drag this button to the bookmarks bar:
+              <a id="bookmarkletLink" class="btn btn-primary" href="#">Aura Real Mode</a></li>
+            <li>On any website, click the bookmark. Click again to close.</li>
+          </ol>
+        </article>
+        <article class="card" data-aura="Content Box" data-aura-tag="Readable">
+          <h3>Option 2: Chrome extension</h3>
+          <p>For daily use: Aura sits in the toolbar and opens with a keyboard shortcut.</p>
+          <ol class="steps">
+            <li>Open <code>chrome://extensions</code> and turn on <strong>Developer mode</strong>.</li>
+            <li>Click <strong>Load unpacked</strong> and choose the <code>extension</code> folder of this project.</li>
+            <li>On any website, click the Aura icon or press <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd>.</li>
+          </ol>
+        </article>
+      </div>
     </section>
   </main>
 
